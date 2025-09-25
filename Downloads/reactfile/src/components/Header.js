@@ -1,11 +1,14 @@
 import React from 'react';
+import javaLogo from '../assets/java-logo2.png';
 
 const Header = () => {
   return (
     <header className="professional-header">
       <div className="header-content">
         <div className="logo-section">
-          <div className="logo">🤖</div>
+          <div className="logo">
+            <img src={javaLogo} alt="Java Logo" className="logo-image" />
+          </div>
           <div className="brand-info">
             <h1>Dr. AI Health Checker</h1>
             <p>Advanced AI-Powered Medical Assessment Platform</p>
