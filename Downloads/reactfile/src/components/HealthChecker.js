@@ -38,7 +38,7 @@ const HealthChecker = () => {
 
     try {
       // Replace this URL with your actual Render backend URL
-      const BACKEND_URL = 'https://your-backend-name.onrender.com';
+      const BACKEND_URL = 'https://ai-health-coach-2.onrender.com';
       
       const response = await fetch(`${BACKEND_URL}/api/analyze-symptoms`, {
         method: 'POST',
