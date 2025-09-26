@@ -36,11 +36,16 @@ const HealthChecker = () => {
     setError('');
     setResponse('');
 
+    // Replace this URL with your actual Render backend URL
+    const BACKEND_URL = 'https://ai-health-coach-2.onrender.com';
+    
     try {
-      // Replace this URL with your actual Render backend URL
-      const BACKEND_URL = 'https://ai-health-coach-2.onrender.com';
       
-      const response = await fetch(`${BACKEND_URL}/api/analyze-symptoms`, {
+      // Backend URL is working but API endpoints are not implemented
+      const ENDPOINT = `${BACKEND_URL}/api/analyze-symptoms`;
+      console.log('Attempting to connect to:', ENDPOINT);
+      
+      const response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,6 +53,28 @@ const HealthChecker = () => {
         body: JSON.stringify(formData),
       });
 
+      console.log('Response status:', response.status);
+      
+      // Handle 404 specifically - API endpoint not implemented
+      if (response.status === 404) {
+        const textResponse = await response.text();
+        console.log('404 Response:', textResponse);
+        throw new Error(`API endpoint not found. Your backend at ${BACKEND_URL} is running but the health analysis API (/api/analyze-symptoms) is not implemented yet.`);
+      }
+      
+      // Check if response is actually JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        console.log('Non-JSON response received:', textResponse);
+        
+        if (textResponse.includes('<!DOCTYPE html>')) {
+          throw new Error(`Backend returned HTML instead of JSON. This usually means the API endpoint is not implemented. Status: ${response.status}`);
+        }
+        
+        throw new Error(`Backend returned non-JSON response. Status: ${response.status}. Content: ${textResponse.substring(0, 200)}...`);
+      }
+      
       const data = await response.json();
 
       if (!response.ok) {
@@ -57,7 +84,38 @@ const HealthChecker = () => {
       setResponse(data.analysis);
     } catch (err) {
       console.error('Error calling backend:', err);
-      setError(err.message || 'Failed to get response from Dr. AI. Please check your backend URL.');
+      
+      // Provide helpful error messages and demo response
+      if (err.message.includes('API endpoint not found') || err.message.includes('404')) {
+        setError('❌ Backend Issue: The health analysis API is not implemented yet. Showing demo response below.');
+        
+        // Provide a demo response for testing
+        setResponse(`🤖 **Dr. AI Demo Response** (Backend API not implemented yet)
+        
+**Symptoms Analyzed**: ${formData.symptoms}
+**Age**: ${formData.age}
+**Gender**: ${formData.gender}
+
+**Assessment**: Based on the symptoms you've described, here are some general observations:
+
+1. **Immediate Care**: If you're experiencing severe symptoms, please seek immediate medical attention.
+
+2. **Common Causes**: The symptoms could be related to various factors including stress, dehydration, lack of sleep, or other underlying conditions.
+
+3. **Recommendations**: 
+   - Stay hydrated
+   - Get adequate rest
+   - Monitor your symptoms
+   - Consult with a healthcare professional for proper diagnosis
+
+⚠️ **Important**: This is a demo response. To get real AI-powered health analysis, your backend needs to implement the /api/analyze-symptoms endpoint with OpenAI integration.
+
+🔧 **For Developer**: Your backend at ${BACKEND_URL} is running but needs the API endpoints to be implemented.`);
+      } else if (err.message.includes('HTML instead of JSON')) {
+        setError('❌ Backend Issue: The server is returning HTML error pages instead of JSON. The API endpoints need to be implemented.');
+      } else {
+        setError(err.message || 'Failed to get response from Dr. AI. Please check your backend implementation.');
+      }
     } finally {
       setLoading(false);
     }
