@@ -37,11 +37,9 @@ const HealthChecker = () => {
     setResponse('');
 
     // Replace this URL with your actual Render backend URL
-    const BACKEND_URL = 'https://ai-health-coach-dr-ai-backend-41va.onrender.com/ask';
+    const BACKEND_URL = 'https://ai-health-coach-dr-ai-backend-41va.onrender.com';
     
     try {
-      
-      // Backend URL is working but API endpoints are not implemented
       const ENDPOINT = `${BACKEND_URL}/api/analyze-symptoms`;
       console.log('Attempting to connect to:', ENDPOINT);
       
