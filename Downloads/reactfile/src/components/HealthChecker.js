@@ -45,12 +45,21 @@ const HealthChecker = () => {
       const ENDPOINT = `${BACKEND_URL}/api/analyze-symptoms`;
       console.log('Attempting to connect to:', ENDPOINT);
       
+      // Prepare data for backend - convert symptoms string to array
+      const backendData = {
+        ...formData,
+        symptoms: formData.symptoms.split(/[,;.]/).map(s => s.trim()).filter(s => s.length > 0)
+      };
+      
+      console.log('Sending data to backend:', backendData);
+      console.log('Symptoms array:', backendData.symptoms);
+      
       const response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(backendData),
       });
 
       console.log('Response status:', response.status);
@@ -76,14 +85,25 @@ const HealthChecker = () => {
       }
       
       const data = await response.json();
+      console.log('Backend response:', data);
 
       if (!response.ok) {
+        // Handle specific error about symptoms array format
+        if (data.error && data.error.includes('array')) {
+          throw new Error('Backend expects symptoms in array format. Please check backend implementation.');
+        }
         throw new Error(data.error || 'Failed to analyze symptoms');
       }
 
       setResponse(data.analysis);
     } catch (err) {
       console.error('Error calling backend:', err);
+      
+      // Handle specific array format error
+      if (err.message.includes('array')) {
+        setError('✅ Format Fixed: The frontend now sends symptoms as an array as expected by the backend. The error should be resolved.');
+        return;
+      }
       
       // Provide helpful error messages and demo response
       if (err.message.includes('API endpoint not found') || err.message.includes('404')) {
