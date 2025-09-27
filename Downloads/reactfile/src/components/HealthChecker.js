@@ -37,7 +37,7 @@ const HealthChecker = () => {
     setResponse('');
 
     // Replace this URL with your actual Render backend URL
-    const BACKEND_URL = 'https://ai-health-coach-dr-ai-backend-41va.onrender.com';
+    const BACKEND_URL = 'https://ai-health-coach-dr-ai-backend-41va.onrender.com/ask';
     
     try {
       
