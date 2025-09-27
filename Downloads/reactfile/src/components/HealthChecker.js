@@ -87,30 +87,61 @@ const HealthChecker = () => {
       
       // Provide helpful error messages and demo response
       if (err.message.includes('API endpoint not found') || err.message.includes('404')) {
-        setError('❌ Backend Issue: The health analysis API is not implemented yet. Showing demo response below.');
+        setError('');  // Clear error since we're providing a demo response
         
-        // Provide a demo response for testing
-        setResponse(`🤖 **Dr. AI Demo Response** (Backend API not implemented yet)
+        // Generate a realistic demo response based on symptoms
+        const generateDemoResponse = (symptoms, age, gender) => {
+          const commonSymptoms = symptoms.toLowerCase();
+          let assessment = '';
+          let recommendations = [];
+          
+          // Basic symptom analysis
+          if (commonSymptoms.includes('headache') || commonSymptoms.includes('head')) {
+            assessment = 'Headaches can be caused by various factors including tension, dehydration, eye strain, or stress.';
+            recommendations = ['Stay hydrated', 'Get adequate rest', 'Consider reducing screen time', 'Apply cold or warm compress'];
+          } else if (commonSymptoms.includes('fever') || commonSymptoms.includes('temperature')) {
+            assessment = 'Fever indicates your body is fighting an infection. Monitor your temperature and overall condition.';
+            recommendations = ['Rest and stay hydrated', 'Monitor temperature regularly', 'Seek medical attention if fever persists or gets worse'];
+          } else if (commonSymptoms.includes('cough') || commonSymptoms.includes('throat')) {
+            assessment = 'Respiratory symptoms may indicate a viral or bacterial infection, allergies, or irritation.';
+            recommendations = ['Stay hydrated', 'Use throat lozenges', 'Avoid irritants like smoke', 'Consider honey for soothing'];
+          } else if (commonSymptoms.includes('stomach') || commonSymptoms.includes('nausea') || commonSymptoms.includes('digestive')) {
+            assessment = 'Digestive symptoms can be related to food, stress, medication, or underlying conditions.';
+            recommendations = ['Eat bland foods (BRAT diet)', 'Stay hydrated', 'Avoid dairy and fatty foods', 'Rest your digestive system'];
+          } else {
+            assessment = 'Based on your symptoms, there could be various underlying causes that should be evaluated.';
+            recommendations = ['Monitor your symptoms', 'Stay hydrated', 'Get adequate rest', 'Note any changes or worsening'];
+          }
+          
+          return `🤖 **Dr. AI Health Assessment** 
+
+**Patient Information:**
+- **Age**: ${age} years
+- **Gender**: ${gender}
+- **Reported Symptoms**: ${symptoms}
+
+**Initial Assessment:**
+${assessment}
+
+**Recommended Actions:**
+${recommendations.map((rec, index) => `${index + 1}. ${rec}`).join('\n')}
+
+**Important Disclaimers:**
+⚠️ This is an AI-generated assessment for informational purposes only
+⚠️ Always consult with qualified healthcare professionals for proper diagnosis
+⚠️ Seek immediate medical attention for severe or emergency symptoms
+
+**When to Seek Immediate Care:**
+- Difficulty breathing or chest pain
+- Severe pain or persistent high fever
+- Signs of severe dehydration
+- Any symptoms that worsen rapidly
+
+---
+*This demo response simulates AI analysis. For real AI-powered health insights, the backend API needs to be implemented with OpenAI integration.*`;
+        };
         
-**Symptoms Analyzed**: ${formData.symptoms}
-**Age**: ${formData.age}
-**Gender**: ${formData.gender}
-
-**Assessment**: Based on the symptoms you've described, here are some general observations:
-
-1. **Immediate Care**: If you're experiencing severe symptoms, please seek immediate medical attention.
-
-2. **Common Causes**: The symptoms could be related to various factors including stress, dehydration, lack of sleep, or other underlying conditions.
-
-3. **Recommendations**: 
-   - Stay hydrated
-   - Get adequate rest
-   - Monitor your symptoms
-   - Consult with a healthcare professional for proper diagnosis
-
-⚠️ **Important**: This is a demo response. To get real AI-powered health analysis, your backend needs to implement the /api/analyze-symptoms endpoint with OpenAI integration.
-
-🔧 **For Developer**: Your backend at ${BACKEND_URL} is running but needs the API endpoints to be implemented.`);
+        setResponse(generateDemoResponse(formData.symptoms, formData.age, formData.gender));
       } else if (err.message.includes('HTML instead of JSON')) {
         setError('❌ Backend Issue: The server is returning HTML error pages instead of JSON. The API endpoints need to be implemented.');
       } else {
@@ -148,6 +179,22 @@ const HealthChecker = () => {
           <div className="tech-studio-credit">
             <span className="tech-badge">⚡ Powered by Techstudio24-365 Limited Technology</span>
           </div>
+        </div>
+
+        {/* Demo Mode Info Banner */}
+        <div className="demo-banner" style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          padding: '15px',
+          borderRadius: '12px',
+          marginBottom: '20px',
+          textAlign: 'center',
+          boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)'
+        }}>
+          <h3 style={{ margin: '0 0 8px 0', fontSize: '18px' }}>🤖 AI Demo Mode Active</h3>
+          <p style={{ margin: '0', fontSize: '14px', opacity: '0.9' }}>
+            Experience our intelligent health analysis system. Currently running in demo mode with simulated AI responses.
+          </p>
         </div>
 
       <form onSubmit={handleSubmit} className="symptoms-form">
