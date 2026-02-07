@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/FloatingAvatar.css';
+import femaleAvatar from '../assets/female-avatar.png';
 
 const FloatingAvatar = ({ 
   externalLink = 'https://example.com',
@@ -47,36 +48,11 @@ const FloatingAvatar = ({
       >
         {/* Avatar Container */}
         <div className="avatar-container">
-          <svg 
-            viewBox="0 0 100 100" 
-            className="avatar-svg"
+          <img 
+            src={femaleAvatar}
+            className="avatar-image"
             alt="Female Avatar"
-          >
-            {/* Head */}
-            <circle cx="50" cy="35" r="20" fill="#f4a460" />
-            
-            {/* Hair */}
-            <path d="M 30 35 Q 30 15 50 15 Q 70 15 70 35" fill="#8b4513" />
-            <ellipse cx="50" cy="20" rx="22" ry="15" fill="#8b4513" />
-            
-            {/* Eyes */}
-            <circle cx="45" cy="32" r="2.5" fill="#333" />
-            <circle cx="55" cy="32" r="2.5" fill="#333" />
-            
-            {/* Smile */}
-            <path d="M 45 38 Q 50 41 55 38" stroke="#333" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-            
-            {/* Body */}
-            <rect x="38" y="55" width="24" height="30" rx="5" fill="#ff69b4" />
-            
-            {/* Arms */}
-            <rect x="20" y="60" width="18" height="8" rx="4" fill="#f4a460" />
-            <rect x="62" y="60" width="18" height="8" rx="4" fill="#f4a460" />
-            
-            {/* Legs */}
-            <rect x="42" y="85" width="6" height="15" fill="#333" />
-            <rect x="52" y="85" width="6" height="15" fill="#333" />
-          </svg>
+          />
         </div>
 
         {/* Message Bubble */}
