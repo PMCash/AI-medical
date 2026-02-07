@@ -1,12 +1,39 @@
 import React, { useState } from 'react';
 import '../styles/FloatingAvatar.css';
 
-const FloatingAvatar = () => {
+const FloatingAvatar = ({ 
+  externalLink = 'https://example.com',
+  bmiLink = 'https://example.com/bmi',
+  gymLink = 'https://example.com/gym',
+  consultationLink = 'https://example.com/consultation'
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const handleClick = () => {
-    setShowModal(!showModal);
+  const handleAvatarClick = () => {
+    if (externalLink) {
+      window.open(externalLink, '_blank');
+    } else {
+      setShowModal(!showModal);
+    }
+  };
+
+  const handleBMIClick = () => {
+    if (bmiLink) {
+      window.open(bmiLink, '_blank');
+    }
+  };
+
+  const handleGymClick = () => {
+    if (gymLink) {
+      window.open(gymLink, '_blank');
+    }
+  };
+
+  const handleConsultationClick = () => {
+    if (consultationLink) {
+      window.open(consultationLink, '_blank');
+    }
   };
 
   return (
@@ -16,7 +43,7 @@ const FloatingAvatar = () => {
         className={`floating-avatar ${isHovered ? 'hovered' : ''}`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={handleClick}
+        onClick={handleAvatarClick}
       >
         {/* Avatar Container */}
         <div className="avatar-container">
@@ -76,19 +103,19 @@ const FloatingAvatar = () => {
               <div className="modal-section">
                 <h3>📊 Check Your BMI</h3>
                 <p>Calculate your Body Mass Index to understand your health status better.</p>
-                <button className="modal-btn">Calculate BMI Now</button>
+                <button className="modal-btn" onClick={handleBMIClick}>Calculate BMI Now</button>
               </div>
 
               <div className="modal-section">
                 <h3>🏋️ Visit Our Gym</h3>
                 <p>Join our state-of-the-art fitness facility and start your health journey today!</p>
-                <button className="modal-btn">Explore Our Gym</button>
+                <button className="modal-btn" onClick={handleGymClick}>Explore Our Gym</button>
               </div>
 
               <div className="modal-section">
                 <h3>🏥 Health Consultation</h3>
                 <p>Get personalized health advice from our AI-powered health checker.</p>
-                <button className="modal-btn">Get Health Advice</button>
+                <button className="modal-btn" onClick={handleConsultationClick}>Get Health Advice</button>
               </div>
             </div>
           </div>
