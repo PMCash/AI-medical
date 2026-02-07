@@ -3,16 +3,16 @@ import '../styles/FloatingAvatar.css';
 import femaleAvatar from '../assets/female-avatar.png';
 
 const FloatingAvatar = ({ 
-  externalLink = 'https://example.com',
-  bmiLink = 'https://example.com/bmi',
-  gymLink = 'https://example.com/gym',
-  consultationLink = 'https://example.com/consultation'
+  externalLink = 'https://techstudio24-365.com',
+  bmiLink = 'https://techstudio24-365.com',
+  gymLink = 'https://techstudio24-365.com/gym',
+  consultationLink = 'https://techstudio24-365.com'
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleAvatarClick = () => {
-    if (externalLink) {
+    if (externalLink && externalLink.trim() !== '') {
       window.open(externalLink, '_blank');
     } else {
       setShowModal(!showModal);
